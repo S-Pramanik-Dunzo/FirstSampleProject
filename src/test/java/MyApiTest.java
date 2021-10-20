@@ -1,4 +1,5 @@
 
+import io.qameta.allure.Description;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -19,12 +20,13 @@ public class MyApiTest {
     private final static String PASSWORD = "pistol";
 
     @BeforeTest
-    public void set_baseUrl() {
+    public void setBaseUrl() {
         RestAssured.baseURI = "https://reqres.in/";
     }
 
     @Test
-    public void registration_successful() {
+    @Description("Check status code")
+    public void registrationSuccessful() {
         Map<String,String> credential = new HashMap<>();
         credential.put("password",PASSWORD);
         credential.put("email",EMAIL);
@@ -38,7 +40,7 @@ public class MyApiTest {
         Assert.assertEquals(statusCode,HttpStatus.SC_OK,"Wrong status code received");
     }
     @Test
-    public void registration_unsuccessful() {
+    public void registrationUnsuccessful() {
         Map<String,String> credential = new HashMap<>();
         credential.put("email",EMAIL);
         JSONObject json = new JSONObject(credential);
@@ -53,7 +55,7 @@ public class MyApiTest {
         Assert.assertEquals(jsonPath.get("error"),"Missing password","Wrong error message provided");
     }
     @Test
-    public void login_successful() {
+    public void loginSuccessful() {
         Map<String,String> credential = new HashMap<>();
         credential.put("password",PASSWORD);
         credential.put("email",EMAIL);
@@ -67,7 +69,7 @@ public class MyApiTest {
         Assert.assertEquals(statusCode,HttpStatus.SC_OK,"Wrong status code received");
     }
     @Test
-    public void login_unsuccessful() {
+    public void loginUnsuccessful() {
         Map<String,String> credential = new HashMap<>();
         credential.put("email",EMAIL);
         JSONObject json = new JSONObject(credential);
@@ -82,7 +84,7 @@ public class MyApiTest {
         Assert.assertEquals(jsonPath.get("error"),"Missing password","Wrong error message provided");
     }
     @Test
-    public void list_user() {
+    public void listUser() {
         ArrayList<String> expectedUsers = new ArrayList<>();
         expectedUsers.add("michael.lawson@reqres.in");
         expectedUsers.add("lindsay.ferguson@reqres.in");
